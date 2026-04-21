@@ -16,8 +16,13 @@ app.get("/", (req, res) => {
 
 // Alle Tonies
 app.get("/tonies", async (req, res) => {
-  const result = await pool.query("SELECT * FROM tonies");
-  res.json(result.rows);
+  try {
+    const result = await pool.query("SELECT * FROM tonies");
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("DB Fehler");
+  }
 });
 
 const PORT = process.env.PORT || 3000;
